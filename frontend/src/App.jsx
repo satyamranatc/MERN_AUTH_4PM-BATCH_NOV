@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 
 import NavBar from "./components/NavBar.jsx"
+import PrivateRoute from "./components/PrivateRoute.jsx"
 
 import Home from "./pages/Home.jsx"
 import Products from "./pages/Products.jsx"
@@ -19,8 +20,17 @@ export default function App() {
         <NavBar user = {user} />
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/products" element={<Products/>}/>
-          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/products"  
+          element={
+              <PrivateRoute user = {user}>
+                <Products user = {user}/>
+              </PrivateRoute>}/>
+
+          <Route path="/profile" element={
+              <PrivateRoute user = {user}>
+                <Profile user = {user}  setUser = {setUser} />
+              </PrivateRoute>
+          }/>
           <Route path="/auth" element={<Auth setUser = {setUser} />}/>
           <Route path="*" element={<h1>404 Not Found</h1>}/>
         </Routes>
